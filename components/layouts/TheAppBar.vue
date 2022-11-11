@@ -6,15 +6,18 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn icon @click="toggleTheme">
-      <v-icon>{{
-          $vuetify.theme.dark
-            ? 'mdi-moon-waxing-crescent'
-            : 'mdi-white-balance-sunny'
-      }}</v-icon>
+    <!-- {{ chart.length }} -->
+    <v-btn v-if="chart?.length !== 0" icon>
+      <v-badge :content="chart?.length" bottom color="red" overlap>
+        <v-icon>mdi-cart</v-icon>
+      </v-badge>
     </v-btn>
 
-
+    <v-btn v-else icon>
+      <!-- <v-badge    bottom color="red" overlap> -->
+      <v-icon>mdi-cart</v-icon>
+      <!-- </v-badge> -->
+    </v-btn>
 
     <v-menu bottom min-width="200px" rounded offset-y>
       <template #activator="{ on }">
@@ -38,7 +41,7 @@
             <v-divider class="my-3"></v-divider>
             <v-btn depressed rounded text>Edit Account</v-btn>
             <v-divider class="my-3"></v-divider>
-            <v-btn depressed rounded text @click="logout">Logout</v-btn>
+            <v-btn depressed rounded text @click="logout()">Logout</v-btn>
           </div>
         </v-list-item-content>
       </v-card>
@@ -46,36 +49,61 @@
   </v-app-bar>
 </template>
 <script>
+import {
+  reactive,
+  onMounted,
+  watch,
+  ref, useStore, computed,
+} from '@nuxtjs/composition-api'
+
 export default {
-  data: () => ({
-    user: {
+
+  setup(props, context) {
+    const store = useStore()
+    // const router = useRouter()
+    // const loading = ref(false)
+
+    const user = reactive({
       initials: 'JD',
       fullName: 'John Doe',
       email: 'john.doe@doe.com',
-    },
-    drawer: null,
-  }),
-  computed: {
-    items() {
-      return this.$store.state.sidebar.items
-    },
-    pageTitle() {
-      return this.$store.state.pageTitle
-    },
-  },
+    })
+    let drawer = ref(null);
+    const items = computed(() => store.state.sidebar.items)
+    const pageTitle = computed(() => store.state.pageTitle)
+    const chart = computed(() => {
+      return store.getters["cart/cart"];
+    });
+    const handleSidebar = () => {
+      context.emit('sidebar', drawer = !drawer)
+    }
 
-  methods: {
-    async logout() {
-      await this.$auth.logout()
-      this.$router.push('/login')
-    },
-    handleSidebar() {
-      this.$emit('sidebar', (this.drawer = !this.drawer))
-    },
-    toggleTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      localStorage.setItem('useDarkTheme', this.$vuetify.theme.dark.toString())
-    },
-  },
+    const logout = async () => {
+      await store.dispatch('user/logout')
+    }
+
+    watch(chart, (val) => {
+      console.log(val, 'isi chart')
+
+    })
+
+    onMounted(() => {
+
+    });
+
+    return {
+      user,
+      drawer,
+      items,
+      pageTitle,
+      logout,
+      handleSidebar,
+      chart
+
+    }
+  }
+
+
 }
+
 </script>

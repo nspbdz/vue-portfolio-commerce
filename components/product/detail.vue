@@ -2,7 +2,16 @@
 
   <div>
     <v-container fluid>
-
+      <!-- <v-breadcrumbs>
+        <v-btn  icon @click="handleBack">
+            <v-icon>mdi-arrow-back-circle</v-icon>
+        </v-btn>
+      </v-breadcrumbs> -->
+        <v-breadcrumbs>
+        <v-btn  icon @click="handleBack">
+            <v-icon>mdi-arrow-left-circle</v-icon>
+        </v-btn>
+      </v-breadcrumbs>
       <v-row>
         <v-col cols="12" md="8">
 
@@ -42,19 +51,28 @@
 
 
             <v-card-action>
-              <v-btn class="btn btn--minus" @click="counter = counter - 1">
-                -
-              </v-btn>
-              <v-chip>
-                {{ counter }}
-              </v-chip>
-              <v-btn class="btn btn--plus" @click="counter = counter + 1">
-                +
-              </v-btn>
+              <v-container fluid>
+                <v-row>
+                  <v-col>
+
+
+                    <v-btn class="btn btn--minus" @click="counter = counter - 1">
+                      -
+                    </v-btn>
+                    <v-chip>
+                      {{ counter }}
+                    </v-chip>
+                    <v-btn class="btn btn--plus" @click="counter = counter + 1">
+                      +
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-card-action>
+
             <v-card-actions>
 
-              <v-btn block class="white--text" color="deep-purple accent-4" @click="handleCart">
+              <v-btn block class="white--text" color="deep-purple accent-4" @click="HandleChart(product)">
                 Add to Cart
               </v-btn>
             </v-card-actions>
@@ -74,10 +92,10 @@
 <script>
 import {
   ref,
-  useRouter,
-  // useStore,
+  // useRouter,
+  useStore,
   // useRoute
-  // reactive
+  reactive
 } from '@nuxtjs/composition-api'
 
 // import {EditUser} from "../../pages/auth/admin/user/edit.vue"
@@ -91,45 +109,63 @@ export default {
     }
   },
   setup(props) {
-    // const store = useStore()
+    const store = useStore()
 
-    const router = useRouter()
+    // const router = useRouter()
     // const route = useRoute()
 
     console.log(props)
     const counter = ref(1)
+    // const urlBread = history.back()
 
-
-    const search = ref('')
     const dialog = ref(null)
+    const dataLink = ref([{
+      text: 'Home',
+      disabled: false,
+      // link: urlBread,
+    },
+    {
+      text: 'Product',
+      disabled: true,
+      href: '',
+    },
+    ])
 
-    const types = ref(['Places to Be', 'Places to See'])
+    const dataCart = reactive({
+      id: '',
+      qty: '',
+      title: '',
+      colors: '',
+    })
 
+    const HandleChart = async (e) => {
+      console.log(e, 'e p[roduct]');
+      dataCart.id = e.id
+      dataCart.title = e.title
+      dataCart.qty = counter
+      dataCart.colors = selection
+      await store.dispatch('cart/addCart', dataCart)
 
-    const onShow = (e) => {
-      console.log(e)
-
-      router.push("/product/" + e)
     }
+
     const selection = ref('Black')
     const colors = ref(['Red', 'Black', 'Blue',])
 
-    const handleCart = () => {
-      dialog.value = true
-      console.log(dialog, 'dialog')
+    const handleBack = () => {
+      history.back()
     }
 
-
-    console.log(search, 'search')
     return {
-      search,
-      onShow,
-      types,
+      // search,
+      // urlBread,
+      handleBack,
+      dataLink,
       colors,
       selection,
       dialog,
-      handleCart,
-      counter
+      HandleChart,
+      counter,
+      dataCart
     }
   },
   computed: {
