@@ -70,7 +70,7 @@ export default {
     strategies: {
       local: {
         token: {
-          property: 'content.access_token',
+          property: 'access_token',
           global: true,
           required: true,
           type: 'Bearer',
@@ -81,12 +81,12 @@ export default {
         },
         endpoints: {
           login: {
-            url: '/api/login',
+            url: '/api/v1/auth/login',
             method: 'post',
             propertyName: false,
           },
           user: {
-            url: '/api/auth/user',
+            url: '/api/v1/auth/profile',
             method: 'get',
             propertyName: false,
           },

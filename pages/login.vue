@@ -45,12 +45,16 @@
   </section>
 </template>
 <script>
-import { reactive, ref, useRouter, defineComponent } from '@nuxtjs/composition-api'
+import { reactive,
+  useStore,
+  ref, useRouter, defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
   layout: 'auth',
   // middleware: 'guest',
   setup() {
     const router = useRouter()
+    const store = useStore()
+
 
     const login = reactive({
       email: '',
@@ -63,7 +67,9 @@ export default defineComponent({
     const handleSubmit = async () => {
       const isValid = await observer.value.validate();
       if (!isValid) return;
-      router.push('/auth/home')
+      await store.dispatch('user/login', login)
+
+      router.push('/')
     }
 
     return {

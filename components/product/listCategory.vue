@@ -1,33 +1,33 @@
 <template>
 
   <div>
-
-    <br>
-    <h1> Product </h1>
-    <br>
-
     <v-row>
-      <v-col v-for="products in product" :key="products.id" cols="6" sm="4">
-        <v-card class="mx-auto" max-width="400">
-          <v-img :src="products.category.image" alt="lorem" class="image" max-height="250" width="100%"
-            @click="onShow(products.id)">
+      <v-col v-for="categories in category" :key="categories.id" cols="6" sm="2">
+        <v-card class="mx-auto" max-width="200">
+          <v-img :src="categories.image" alt="lorem" :class="`image` + categories.id" max-height="120" width="100%"
+            @click="handleClickImg(categories.id)">
+            <v-overlay v-if="selected === categories.id" :absolute="absolute">
+
+            </v-overlay>
+
           </v-img>
+
+
           <v-card-title>
-            <h3 class="text" v-if="products.title.length < 11">
-              {{ products.title }}
+            <h3 class="text" v-if="categories.name.length < 11">
+              {{ categories.name }}
             </h3>
             <h3 v-else>
-              {{ products.title.substring(0, 11) + ".." }}
+              {{ categories.name.substring(0, 11) + ".." }}
             </h3>
-            <v-spacer></v-spacer>
-
-            <span class="text-h6">${{ products.price }}.00</span>
-
           </v-card-title>
 
         </v-card>
       </v-col>
     </v-row>
+    <br>
+    <br>
+
 
   </div>
 
@@ -37,8 +37,7 @@
 
 import {
   ref,
-  useRouter,
-  // useStore,
+  useStore,
   // useRoute
   // reactive
 } from '@nuxtjs/composition-api'
@@ -46,19 +45,15 @@ import {
 // import {EditUser} from "../../pages/auth/admin/user/edit.vue"
 export default {
   props: {
-    product: {
-      required: true,
-      type: Object
-    },
+
     category: {
       required: true,
       type: Object
     }
   },
   setup(props) {
-    // const store = useStore()
+    const store = useStore()
 
-    const router = useRouter()
     // const route = useRoute()
 
 
@@ -66,23 +61,35 @@ export default {
     const absolute = ref(true)
     const selected = ref(null)
 
+    // const roleOptions = ref([])
+
+
     console.log(props)
-    const types = ref(['Places to Be', 'Places to See'])
+    const search = ref('')
 
 
-    const onShow = (e) => {
-      console.log(e)
-
-      router.push("/product/" + e)
-    }
     const handleClickImg = async (e) => {
+      console.log(e, 'name img')
+      console.log(selected, 'selected img')
+
+      if (e === selected.value) {
+        selected.value = null
+        await store.dispatch("fetch/getSelected", selected);
+
+      } else {
+        selected.value = e
+        await store.dispatch("fetch/getSelected", selected);
+
+      }
+
     }
 
 
 
+
+    console.log(search, 'search')
     return {
-      onShow,
-      types,
+      search,
       selected,
       overlay,
       absolute,

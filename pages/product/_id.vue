@@ -26,9 +26,11 @@ import {
 import Child from "../../components/product/detail.vue";
 
 export default {
+
   components: {
     Child
   },
+  middleware: 'authenticated',
   // layout: 'agen',
   setup() {
     const store = useStore()

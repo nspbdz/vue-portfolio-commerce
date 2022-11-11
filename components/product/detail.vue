@@ -40,7 +40,20 @@
               </v-chip-group>
             </v-card-text>
 
+
+            <v-card-action>
+              <v-btn class="btn btn--minus" @click="counter = counter - 1">
+                -
+              </v-btn>
+              <v-chip>
+                {{ counter }}
+              </v-chip>
+              <v-btn class="btn btn--plus" @click="counter = counter + 1">
+                +
+              </v-btn>
+            </v-card-action>
             <v-card-actions>
+
               <v-btn block class="white--text" color="deep-purple accent-4" @click="handleCart">
                 Add to Cart
               </v-btn>
@@ -84,6 +97,9 @@ export default {
     // const route = useRoute()
 
     console.log(props)
+    const counter = ref(1)
+
+
     const search = ref('')
     const dialog = ref(null)
 
@@ -99,7 +115,7 @@ export default {
     const colors = ref(['Red', 'Black', 'Blue',])
 
     const handleCart = () => {
-      dialog.value=true
+      dialog.value = true
       console.log(dialog, 'dialog')
     }
 
@@ -112,7 +128,8 @@ export default {
       colors,
       selection,
       dialog,
-      handleCart
+      handleCart,
+      counter
     }
   },
   computed: {
