@@ -50,7 +50,6 @@ export default {
       password: '',
       email: '',
       profile: '',
-      referals: [],
 
     })
     const getProductById = () => {

@@ -5,7 +5,7 @@
     <br>
     <h1>Category Product </h1>
     <br>
-    
+
     <ChildCategory :category="roleOptions" />
 
     <Child :product="list" />

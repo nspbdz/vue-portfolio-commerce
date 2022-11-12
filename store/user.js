@@ -22,24 +22,18 @@ export const mutations = {
 
 export const actions = {
   async login(context, payload) {
-    const request={
-      email:payload.email,
-      password:payload.password
-    }
+
     try {
       // const res=await userServices.PostLogin({request})
       const res=await this.$auth.loginWith('local', {
         data: payload
       })
 
-      context.commit('SET_ROLEUSER', res)
       console.log(res, 'responsee')
-
-      // console.log(this.$auth, 'auth')
     } catch (error) {
-      showFailedPopup({ msg: error })
-      console.error(error)
-      // throw error
+      showFailedPopup({ msg: error.message })
+      console.error(error, 'errornya')
+      throw error
     }
   },
 

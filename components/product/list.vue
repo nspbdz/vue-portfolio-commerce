@@ -48,12 +48,9 @@ export default {
   props: {
     product: {
       required: true,
-      type: Object
+      type: [Object, Array]
     },
-    category: {
-      required: true,
-      type: Object
-    }
+
   },
   setup(props) {
     // const store = useStore()

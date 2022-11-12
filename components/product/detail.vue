@@ -1,17 +1,17 @@
 <template>
 
   <div>
+    <!-- <v-btn class="large" icon @click="handleBack">
+      <v-icon>mdi-arrow-left-circle</v-icon>
+    </v-btn> -->
+    <v-btn  @click="handleBack" class="mx-" fab dark  color="primary">
+      <v-icon dark>
+      mdi-arrow-left-circle
+      </v-icon>
+    </v-btn>
+
     <v-container fluid>
-      <!-- <v-breadcrumbs>
-        <v-btn  icon @click="handleBack">
-            <v-icon>mdi-arrow-back-circle</v-icon>
-        </v-btn>
-      </v-breadcrumbs> -->
-        <v-breadcrumbs>
-        <v-btn  icon @click="handleBack">
-            <v-icon>mdi-arrow-left-circle</v-icon>
-        </v-btn>
-      </v-breadcrumbs>
+
       <v-row>
         <v-col cols="12" md="8">
 
@@ -56,13 +56,13 @@
                   <v-col>
 
 
-                    <v-btn class="btn btn--minus" @click="counter = counter - 1">
+                    <v-btn class="btn btn--minus error" @click="counter = counter - 1">
                       -
                     </v-btn>
                     <v-chip>
                       {{ counter }}
                     </v-chip>
-                    <v-btn class="btn btn--plus" @click="counter = counter + 1">
+                    <v-btn class="btn btn--plus success" @click="counter = counter + 1">
                       +
                     </v-btn>
                   </v-col>
@@ -136,14 +136,19 @@ export default {
       qty: '',
       title: '',
       colors: '',
+      images: '',
     })
 
     const HandleChart = async (e) => {
+      // dialog.value=true;
       console.log(e, 'e p[roduct]');
       dataCart.id = e.id
       dataCart.title = e.title
+      dataCart.description = e.description
+      dataCart.price = e.price
       dataCart.qty = counter
       dataCart.colors = selection
+      dataCart.images = e?.images[0]
       await store.dispatch('cart/addCart', dataCart)
 
     }

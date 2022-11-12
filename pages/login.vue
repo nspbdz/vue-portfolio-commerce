@@ -2,13 +2,13 @@
   <section class="login h-100 d-flex justify-center">
     <div class="my-auto">
       <v-container fluid>
-        <BaseCard  class="mt-10 pa-15">
+        <BaseCard class="mt-10 pa-15">
           <validation-observer ref="observer" slim>
             <form @submit.prevent="handleSubmit(invalid)">
               <div class="login-head text-center">
                 <h1 class="display-1 font-weight-bold">Selamat Datang di MyCommerce</h1>
                 <p class="text-gray font-weight-light mt-2">
-                  Masukkan email dan password  anda untuk mengakses akun anda
+                  Masukkan email dan password anda untuk mengakses akun anda
                 </p>
               </div>
 
@@ -45,9 +45,11 @@
   </section>
 </template>
 <script>
-import { reactive,
+import {
+  reactive,
   useStore,
-  ref, useRouter, defineComponent } from '@nuxtjs/composition-api'
+  ref, useRouter, defineComponent
+} from '@nuxtjs/composition-api'
 export default defineComponent({
   layout: 'auth',
   // middleware: 'guest',

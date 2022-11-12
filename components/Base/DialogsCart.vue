@@ -3,7 +3,7 @@
 
   <v-row justify="space-around">
     <v-col cols="auto">
-      <v-dialog max-width="600" :data="data" :color="color" v-bind="$attrs" v-on="$listeners">
+      <v-dialog max-width="600" :data="data"  v-bind="$attrs" v-on="$listeners">
 
         <template v-slot:default="dialog">
           <v-card>

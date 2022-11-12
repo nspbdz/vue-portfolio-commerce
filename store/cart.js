@@ -27,12 +27,19 @@ export const mutations = {
     if ((findIdProduct.length === 0) ){
     state.cart.push(items)
     }else{
-      findIdProduct[0].qty = findIdProduct[0].qty +items.qty
-      // console.log(findIdProduct , 'findIdProduct sss')
+      if(items.change === '-'){
+      findIdProduct[0].qty = findIdProduct[0].qty - 1
+
+      }else if(items.change === '+'){
+        findIdProduct[0].qty = findIdProduct[0].qty + 1
+
+        }else{
+          findIdProduct[0].qty = findIdProduct[0].qty +items.qty
+        }
+        return findIdProduct
 
     }
 
-    // state.cart.push(items)
   },
 
 }
@@ -46,13 +53,40 @@ export const actions = {
       id: payload.id,
       qty: payload.qty,
       title: payload.title,
+      description: payload.description,
+      price: payload.price,
       colors: payload.colors,
+      images: payload.images,
     }
 
     try {
 
       // console.log(items)
      await context.commit('SET_CART', request)
+    } catch (error) {
+      showFailedPopup({ msg: error })
+      console.error(error)
+      throw error
+    }
+  },
+
+  async minesCart(context, payload) {
+    console.log(payload, 'data payload');
+    try {
+      // console.log(items)
+     await context.commit('SET_CART', payload)
+    } catch (error) {
+      showFailedPopup({ msg: error })
+      console.error(error)
+      throw error
+    }
+  },
+
+  async plusCart(context, payload) {
+    console.log(payload, 'data plusCart');
+    try {
+      // console.log(items)
+     await context.commit('SET_CART', payload)
     } catch (error) {
       showFailedPopup({ msg: error })
       console.error(error)

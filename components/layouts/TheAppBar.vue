@@ -1,58 +1,71 @@
 <template>
-  <v-app-bar dense flat app>
-    <v-app-bar-nav-icon @click="handleSidebar"></v-app-bar-nav-icon>
+  <div>
 
-    <PageTitle>{{ pageTitle || 'Page' }}</PageTitle>
 
-    <v-spacer></v-spacer>
+    <v-app-bar dense flat app>
 
-    <!-- {{ chart.length }} -->
-    <v-btn v-if="chart?.length !== 0" icon>
-      <v-badge :content="chart?.length" bottom color="red" overlap>
+      <v-app-bar-nav-icon @click="handleSidebar"></v-app-bar-nav-icon>
+
+      <PageTitle>{{ pageTitle || 'Page' }}</PageTitle>
+
+      <v-spacer></v-spacer>
+
+      <!-- {{ chart.length }} -->
+      <BaseCartDialog v-model="dialog" :data="dataCart"></BaseCartDialog>
+
+      <v-btn @click="handleCart" v-if="dataCart?.length !== 0" icon>
+        <v-badge :content="dataCart?.length" bottom color="red" overlap>
+          <v-icon>mdi-cart</v-icon>
+        </v-badge>
+
+      </v-btn>
+
+
+      <v-btn @click="handleCart" v-else icon>
         <v-icon>mdi-cart</v-icon>
-      </v-badge>
-    </v-btn>
+      </v-btn>
 
-    <v-btn v-else icon>
-      <!-- <v-badge    bottom color="red" overlap> -->
-      <v-icon>mdi-cart</v-icon>
-      <!-- </v-badge> -->
-    </v-btn>
 
-    <v-menu bottom min-width="200px" rounded offset-y>
-      <template #activator="{ on }">
-        <v-btn icon x-large v-on="on">
-          <v-avatar color="brown" size="24">
-            <v-img src="https://i0.wp.com/global.ac.id/wp-content/uploads/2015/04/speaker-3-v2.jpg?fit=768%2C768&ssl=1">
-            </v-img>
-          </v-avatar>
-        </v-btn>
-      </template>
-      <v-card>
-        <v-list-item-content class="justify-center">
-          <div class="mx-auto text-center">
+
+      <v-menu bottom min-width="200px" rounded offset-y>
+        <template #activator="{ on }">
+          <v-btn icon x-large v-on="on">
             <v-avatar color="brown" size="24">
               <v-img
                 src="https://i0.wp.com/global.ac.id/wp-content/uploads/2015/04/speaker-3-v2.jpg?fit=768%2C768&ssl=1">
               </v-img>
             </v-avatar>
-            <h3 class="mt-3">{{ user.fullName }}</h3>
-            <p class="text-caption mt-1">{{ user.email }}</p>
-            <v-divider class="my-3"></v-divider>
-            <v-btn depressed rounded text>Edit Account</v-btn>
-            <v-divider class="my-3"></v-divider>
-            <v-btn depressed rounded text @click="logout()">Logout</v-btn>
-          </div>
-        </v-list-item-content>
-      </v-card>
-    </v-menu>
-  </v-app-bar>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-list-item-content class="justify-center">
+            <div class="mx-auto text-center">
+              <v-avatar color="brown" size="24">
+                <v-img
+                  src="https://i0.wp.com/global.ac.id/wp-content/uploads/2015/04/speaker-3-v2.jpg?fit=768%2C768&ssl=1">
+                </v-img>
+              </v-avatar>
+              <h3 class="mt-3">{{ user.fullName }}</h3>
+              <p class="text-caption mt-1">{{ user.email }}</p>
+              <v-divider class="my-3"></v-divider>
+              <v-btn depressed rounded text>Edit Account</v-btn>
+              <v-divider class="my-3"></v-divider>
+              <v-btn depressed rounded text @click="logout()">Logout</v-btn>
+            </div>
+          </v-list-item-content>
+        </v-card>
+      </v-menu>
+
+    </v-app-bar>
+  </div>
+
 </template>
 <script>
 import {
   reactive,
   onMounted,
   watch,
+  useRouter,
   ref, useStore, computed,
 } from '@nuxtjs/composition-api'
 
@@ -60,8 +73,9 @@ export default {
 
   setup(props, context) {
     const store = useStore()
-    // const router = useRouter()
+    const router = useRouter()
     // const loading = ref(false)
+    const dialog = ref(null)
 
     const user = reactive({
       initials: 'JD',
@@ -71,7 +85,7 @@ export default {
     let drawer = ref(null);
     const items = computed(() => store.state.sidebar.items)
     const pageTitle = computed(() => store.state.pageTitle)
-    const chart = computed(() => {
+    const dataCart = computed(() => {
       return store.getters["cart/cart"];
     });
     const handleSidebar = () => {
@@ -80,9 +94,17 @@ export default {
 
     const logout = async () => {
       await store.dispatch('user/logout')
+      router.push('/login')
+
     }
 
-    watch(chart, (val) => {
+    const handleCart = () => {
+      // await store.dispatch('user/logout')
+      dialog.value = true
+      console.log(dialog, 'value')
+    }
+
+    watch(dataCart, (val) => {
       console.log(val, 'isi chart')
 
     })
@@ -98,8 +120,9 @@ export default {
       pageTitle,
       logout,
       handleSidebar,
-      chart
-
+      dataCart,
+      dialog,
+      handleCart,
     }
   }
 

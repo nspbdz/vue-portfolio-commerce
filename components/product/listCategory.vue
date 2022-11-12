@@ -48,7 +48,7 @@ export default {
 
     category: {
       required: true,
-      type: Object
+      type: [Object, Array]
     }
   },
   setup(props) {
