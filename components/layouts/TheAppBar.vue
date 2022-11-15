@@ -21,7 +21,7 @@
       </v-btn>
 
 
-      <v-btn @click="handleCart" v-else icon>
+      <v-btn v-else icon>
         <v-icon>mdi-cart</v-icon>
       </v-btn>
 

@@ -56,9 +56,10 @@
             </v-card-text>
 
             <v-card-actions class="justify-center">
-              <v-btn block class="primary" @click="dialog.value = false">Order</v-btn>
-            </v-card-actions>
+              <v-btn class="error" @click="dialog.value = false">Close</v-btn>
+              <v-btn class="primary" @click="handleOrder(dialog)">Order</v-btn>
 
+            </v-card-actions>
           </v-card>
         </template>
       </v-dialog>
@@ -73,7 +74,7 @@
 <script>
 import {
   ref,
-  // useRouter,
+  useRouter,
   useStore,
   // useRoute
   reactive
@@ -89,6 +90,7 @@ export default {
   },
   setup(props) {
     const store = useStore()
+    const router = useRouter()
 
     console.log(props, 'propsan')
     const counter = ref(1)
@@ -114,10 +116,19 @@ export default {
       await store.dispatch('cart/plusCart', changeData)
     }
 
+    const handleOrder =  (e) => {
+      console.log('Order terpencet')
+      e.value = false;
+      router.push('/invoice')
+
+      // await store.dispatch('cart/plusCart', changeData)
+    }
+
     return {
       counter,
       handleMines,
-      handlePlus
+      handlePlus,
+      handleOrder
     }
   }
   // data() {

@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <v-row>
+    <v-row justify="center">
       <v-col v-for="categories in category" :key="categories.id" cols="6" sm="2">
         <v-card class="mx-auto" max-width="200">
           <v-img :src="categories.image" alt="lorem" :class="`image` + categories.id" max-height="120" width="100%"
@@ -21,6 +21,7 @@
               {{ categories.name.substring(0, 11) + ".." }}
             </h3>
           </v-card-title>
+          <!-- <v-btn @click="$emit('onClick', categories)">emitan </v-btn> -->
 
         </v-card>
       </v-col>
@@ -48,10 +49,10 @@ export default {
 
     category: {
       required: true,
-      type: [Object, Array]
+      type: Object
     }
   },
-  setup(props) {
+  setup(props, context) {
     const store = useStore()
 
     // const route = useRoute()

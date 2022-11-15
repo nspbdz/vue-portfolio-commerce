@@ -5,8 +5,9 @@
     <br>
     <h1>Category Product </h1>
     <br>
-
-    <ChildCategory :category="roleOptions" />
+<!-- contoh emit -->
+    <!-- <ChildCategory :category="roleOptions" @onClick="handleClick" /> -->
+    <ChildCategory :category="roleOptions"  />
 
     <Child :product="list" />
   </div>
@@ -68,8 +69,11 @@ export default {
       getFetch()
 
     })
-
+    const handleClick = (e) => {
+      console.log(e)
+    }
     return {
+      handleClick,
       list,
       dataFetch,
       getFetch,
