@@ -12,7 +12,7 @@
 
       <!-- {{ chart.length }} -->
       <BaseCartDialog v-model="dialog" :data="dataCart"></BaseCartDialog>
-
+      
       <v-btn @click="handleCart" v-if="dataCart?.length !== 0" icon>
         <v-badge :content="dataCart?.length" bottom color="red" overlap>
           <v-icon>mdi-cart</v-icon>

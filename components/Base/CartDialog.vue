@@ -19,15 +19,18 @@
                   <v-col cols="12" sm="8" md="8">
                     <div>
 
-                      <h1>
+                      <div class="text-h5">
                         {{ items.title }}
-                      </h1>
 
-                      <h4>
+                      </div>
+
+                      <br>
+                      <h3>
                         {{ items.description }}
-                      </h4>
+                      </h3>
 
                     </div>
+                    <br>
 
                     <v-btn v-if="items.qty === 1" disabled class="btn btn--minus error" @click="handleMines(items.id)">
                       -
@@ -41,6 +44,10 @@
                     <v-btn class="btn btn--plus success" @click="handlePlus(items.id)">
                       +
                     </v-btn>
+                    <v-chip class=" ml-12">
+                      {{ items.colors }}
+                    </v-chip>
+
                     <br>
                     <br>
                     <h2>
@@ -116,7 +123,7 @@ export default {
       await store.dispatch('cart/plusCart', changeData)
     }
 
-    const handleOrder =  (e) => {
+    const handleOrder = (e) => {
       console.log('Order terpencet')
       e.value = false;
       router.push('/invoice')
